@@ -726,14 +726,61 @@
         padding-bottom: clamp(8px, 2dvh, 20px);
       }
 
+      .about-intro-hero {
+        position: relative;
+        flex: 1 1 auto;
+        min-height: min(78vh, 940px);
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: clamp(8px, 2vw, 16px);
+      }
+
+      .about-intro-visual {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        min-height: min(78vh, 940px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .about-intro-visual img {
+        width: auto;
+        height: auto;
+        max-width: min(100%, 700px);
+        max-height: min(82vh, 980px);
+        object-fit: contain;
+        display: block;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        box-shadow: 0 16px 48px rgba(10, 10, 10, 0.12);
+      }
+
       .about-intro-block--split .about-intro-copy--end {
-        margin-top: auto;
-        margin-left: auto;
-        margin-right: 0;
-        margin-bottom: clamp(4px, 1.5dvh, 12px);
-        max-width: min(30rem, 94%);
         text-align: left;
-        padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+      }
+
+      .about-intro-hero .about-intro-copy--end {
+        position: absolute;
+        right: max(12px, env(safe-area-inset-right));
+        bottom: max(10px, env(safe-area-inset-bottom));
+        left: auto;
+        margin: 0;
+        max-width: min(32rem, 52%, calc(100% - 24px));
+        width: fit-content;
+        padding: clamp(0.85rem, 2vw, 1.15rem) clamp(1rem, 2.5vw, 1.35rem);
+        background: rgba(255, 252, 247, 0.94);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        box-shadow:
+          0 10px 36px rgba(10, 10, 10, 0.14),
+          0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+        z-index: 2;
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
       }
 
       .about-intro-copy {
@@ -1607,6 +1654,29 @@
           max-width: min(30rem, 100%);
         }
 
+        .about-intro-hero {
+          min-height: min(64vh, 720px);
+        }
+
+        .about-intro-visual {
+          min-height: min(64vh, 720px);
+        }
+
+        .about-intro-visual img {
+          max-width: min(100%, 92vw);
+          max-height: min(68vh, 800px);
+        }
+
+        .about-intro-hero .about-intro-copy--end {
+          right: max(10px, env(safe-area-inset-right));
+          bottom: max(10px, env(safe-area-inset-bottom));
+          left: auto;
+          margin-left: auto;
+          margin-right: 0;
+          max-width: min(30rem, calc(100% - 20px));
+          width: fit-content;
+        }
+
         .footer-grid {
           grid-template-columns: 1fr;
           gap: 36px;
@@ -1888,11 +1958,23 @@
       </div>
       <div id="about-sbs" class="about-intro-block about-intro-block--split">
         <h3 class="about-subhead">Scene by Scene</h3>
-        <div class="about-intro-copy about-intro-copy--end">
-          <p>
-            Yeoksam, Seoul — 독립영화와 마이크로 시네마에 초점을 둔 커뮤니티 공간입니다. 필름·재즈·토크 등 장르별 Scene
-            프로그램과 클래스, 정규 모임을 통해 프레임 안팎의 이야기를 나눕니다.
-          </p>
+        <div class="about-intro-hero">
+          <figure class="about-intro-visual">
+            <img
+              src="scene-by-scene-intro-triptych.png"
+              alt="상영·음악 감상·독서 토론을 담은 세로 콜라주: 함께 필름을 보는 관객, 헤드폰으로 음악에 잠긴 청취자, 서재에서 책을 두고 이야기 나누는 세 사람"
+              width="800"
+              height="1200"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
+          <div class="about-intro-copy about-intro-copy--end">
+            <p>
+              Yeoksam, Seoul — 독립영화와 마이크로 시네마에 초점을 둔 커뮤니티 공간입니다. 필름·재즈·토크 등 장르별 Scene
+              프로그램과 클래스, 정규 모임을 통해 프레임 안팎의 이야기를 나눕니다.
+            </p>
+          </div>
         </div>
       </div>
     </section>
