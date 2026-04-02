@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f2f0e9" />
+    <title>정규 모임 · Scene by Scene</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&amp;family=Noto+Sans+KR:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="site-header.css" />
+    <link rel="stylesheet" href="site-footer.css" />
+    <style>
+      :root {
+        --bg-card: #fffcf7;
+        --accent-rose: #6b4150;
+        --accent-green: #3d5c50;
+        --text-dim: #8a8880;
+        --font-display: 'Montserrat', 'Noto Sans KR', system-ui, sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      a {
+        color: inherit;
+      }
+      h1 {
+        font-family: var(--font-display);
+        font-size: clamp(1.35rem, 4vw, 1.75rem);
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        margin-bottom: 12px;
+      }
+      .page-lead-meetup {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        max-width: 36rem;
+        margin: 0 auto 28px;
+        line-height: 1.7;
+      }
+      .meetup-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 12px;
+        margin-bottom: 28px;
+      }
+      .meetup-tab {
+        border: 1px solid var(--border);
+        background: transparent;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        font-family: var(--font-sans);
+        color: var(--text-muted);
+        transition: all 0.2s;
+        min-height: 44px;
+        min-width: 44px;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+      .meetup-tab:hover {
+        color: var(--text);
+      }
+      .meetup-tab.active {
+        background: var(--text);
+        color: var(--bg);
+        border-color: var(--text);
+      }
+      .meetup-stack {
+        width: 100%;
+      }
+      .meetup-panel {
+        display: none;
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 0;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+      .meetup-panel.active {
+        display: block;
+      }
+      .meetup-panel-banner {
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(to bottom, #d4cfc4, #a8a29a);
+        border-bottom: 1px solid var(--border);
+      }
+      .meetup-panel-banner.scene-jazz {
+        background: linear-gradient(165deg, #ddd2d5, #9a858f);
+      }
+      .meetup-panel-banner.scene-talk {
+        background: linear-gradient(165deg, #cfd9d0, #7a9082);
+      }
+      .meetup-panel-mark {
+        font-family: var(--font-display);
+        font-size: clamp(0.75rem, 2.5vw, 1rem);
+        color: rgba(255, 255, 255, 0.24);
+        text-align: center;
+        transform: rotate(-12deg);
+        line-height: 1.15;
+      }
+      .meetup-panel-body {
+        padding: 24px;
+      }
+      .meetup-panel h2 {
+        font-size: 1.15rem;
+        margin-bottom: 12px;
+      }
+      .meetup-theme {
+        color: var(--text-muted);
+        margin-bottom: 16px;
+        line-height: 1.75;
+      }
+      .meetup-price {
+        font-size: 1.05rem;
+        font-weight: 600;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+      }
+      .meetup-price span {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 400;
+        color: var(--text-dim);
+        margin-top: 4px;
+      }
+      .meetup-cta {
+        margin-top: 20px;
+      }
+      .meetup-cta .btn-primary {
+        display: inline-block;
+        padding: 12px 22px;
+        font-size: 0.88rem;
+        background: var(--text);
+        color: var(--bg);
+        border: 1px solid var(--text);
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .meetup-cta .btn-primary:hover {
+        background: transparent;
+        color: var(--text);
+      }
+      .community-box {
+        width: 100%;
+        padding: 28px 24px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+      }
+      .community-box h2 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--text);
+      }
+      .community-hint {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+        margin-bottom: 18px;
+        line-height: 1.6;
+      }
+      .community-links {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .community-links a {
+        display: block;
+        padding: 12px 16px;
+        border: 1px solid var(--border);
+        color: var(--text);
+        text-decoration: none;
+        transition: border-color 0.2s, background 0.2s;
+        font-size: 0.92rem;
+      }
+      .community-links a:hover {
+        border-color: var(--text);
+        background: rgba(10, 10, 10, 0.03);
+      }
+      .community-links .hint {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body class="page-sub">
+    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+    <header id="header">
+      <a href="index.html" class="logo" aria-label="Scene by Scene 홈">
+        <img src="scene-by-scene-logo.png" alt="Scene by Scene — Yeoksam" width="778" height="401" decoding="async" />
+      </a>
+      <nav id="nav">
+        <div class="nav-item">
+          <a href="index.html#programs" class="nav-link" aria-haspopup="true">프로그램</a>
+          <div class="dropdown">
+            <a href="index.html#programs">Scene of this week</a>
+            <a href="programs-detail.html?scene=film"><span aria-hidden="true">🎬</span> Scene: Film</a>
+            <a href="programs-detail.html?scene=jazz"><span aria-hidden="true">🎷</span> Scene: Jazz</a>
+            <a href="programs-detail.html?scene=talk"><span aria-hidden="true">🧠</span> Scene: Talk</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="index.html#calendar" class="nav-link" aria-haspopup="true">커뮤니티</a>
+          <div class="dropdown">
+            <a href="index.html#calendar">월간 일정</a>
+            <a href="meetups.html">정규 모임</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="index.html#classes" class="nav-link" aria-haspopup="true">클래스</a>
+          <div class="dropdown">
+            <a href="index.html#class-critic">영화 비평</a>
+            <a href="index.html#class-scenario">시나리오</a>
+            <a href="index.html#class-production">제작 실습</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="index.html#about-sbs" class="nav-link" aria-haspopup="true">소개</a>
+          <div class="dropdown">
+            <a href="index.html#about-sbs">Scene by Scene</a>
+            <a href="index.html#rental">Scene by Scene 공간 소개</a>
+          </div>
+        </div>
+      </nav>
+      <div class="nav-icons">
+        <button class="icon-btn" id="search-btn" type="button" aria-label="검색 열기">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <button class="hamburger" id="mobile-btn" type="button" aria-label="메뉴 열기"><span></span><span></span><span></span></button>
+      </div>
+    </header>
+
+    <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
+
+    <div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="검색">
+      <button class="search-close" id="search-close" type="button" aria-label="검색 닫기">×</button>
+      <div class="search-container">
+        <input type="search" placeholder="검색어를 입력하세요..." autocomplete="off" />
+        <div class="search-tags">
+          <span class="search-tag">괴물</span>
+          <span class="search-tag">에릭 로메르</span>
+          <span class="search-tag">비평 워크숍</span>
+          <span class="search-tag">공간 대관</span>
+        </div>
+      </div>
+    </div>
+
+    <main id="main">
+      <div class="sub-page-inner">
+      <h1>정규 모임</h1>
+      <p class="page-lead-meetup">
+        Scene: Film · Jazz · Talk 유형별 정기 모임 안내와 참여 채널입니다.
+      </p>
+
+      <div class="meetup-tabs" role="tablist" aria-label="정규 모임 유형">
+        <button
+          type="button"
+          class="meetup-tab active"
+          role="tab"
+          id="tab-film"
+          aria-selected="true"
+          aria-controls="panel-film"
+          data-panel="film"
+        >
+          Scene: Film
+        </button>
+        <button
+          type="button"
+          class="meetup-tab"
+          role="tab"
+          id="tab-jazz"
+          aria-selected="false"
+          aria-controls="panel-jazz"
+          data-panel="jazz"
+        >
+          Scene: Jazz
+        </button>
+        <button
+          type="button"
+          class="meetup-tab"
+          role="tab"
+          id="tab-talk"
+          aria-selected="false"
+          aria-controls="panel-talk"
+          data-panel="talk"
+        >
+          Scene: Talk
+        </button>
+      </div>
+
+      <div class="meetup-stack">
+      <section
+        id="panel-film"
+        class="meetup-panel active"
+        role="tabpanel"
+        aria-labelledby="tab-film"
+        tabindex="0"
+      >
+        <div class="meetup-panel-banner scene-film" aria-hidden="true">
+          <span class="meetup-panel-mark">FILM<br />CLUB</span>
+        </div>
+        <div class="meetup-panel-body">
+          <h2>필름 모임</h2>
+          <p class="meetup-theme">
+            월례 단편·장편 감상과 짧은 리뷰 공유. 라인업은 매달 공지하며, 독립·아트필름·고전을
+            골고루 다룹니다.
+          </p>
+          <div class="meetup-price">
+            회당 15,000원
+            <span>음료 1잔 포함 · 첫 방문 시 안내 후 참여</span>
+          </div>
+          <p class="meetup-cta">
+            <a class="btn-primary" href="#community-channels">참여 · 모집 안내 (당근)</a>
+          </p>
+        </div>
+      </section>
+
+      <section id="panel-jazz" class="meetup-panel" role="tabpanel" aria-labelledby="tab-jazz" tabindex="0" hidden>
+        <div class="meetup-panel-banner scene-jazz" aria-hidden="true">
+          <span class="meetup-panel-mark">JAZZ<br />MEET</span>
+        </div>
+        <div class="meetup-panel-body">
+          <h2>재즈 모임</h2>
+          <p class="meetup-theme">
+            라이브 전후로 앨범·공연 이야기를 나누는 소규모 취향 모임. 현장 연주 일정과 연계해
+            모입니다.
+          </p>
+          <div class="meetup-price">
+            회당 20,000원
+            <span>라이브 옵션 시 별도 티켓 안내</span>
+          </div>
+          <p class="meetup-cta">
+            <a class="btn-primary" href="#community-channels">라이브 · 모집 안내 (당근)</a>
+          </p>
+        </div>
+      </section>
+
+      <section id="panel-talk" class="meetup-panel" role="tabpanel" aria-labelledby="tab-talk" tabindex="0" hidden>
+        <div class="meetup-panel-banner scene-talk" aria-hidden="true">
+          <span class="meetup-panel-mark">TALK<br />ROOM</span>
+        </div>
+        <div class="meetup-panel-body">
+          <h2>토크 모임</h2>
+          <p class="meetup-theme">
+            제작·배급·비평 등 업계·취미 레벨의 토론 모임. 주제와 선읽기 자료는 공지방에 사전
+            공유합니다.
+          </p>
+          <div class="meetup-price">
+            회당 12,000원
+            <span>자료 인쇄비 별도(있을 경우 공지)</span>
+          </div>
+          <p class="meetup-cta">
+            <a class="btn-primary" href="#community-channels">토론 참여 · 공지방 (카카오)</a>
+          </p>
+        </div>
+      </section>
+
+      <div class="community-box" id="community-channels">
+        <h2>공통 · 커뮤니티 채널</h2>
+        <p class="community-hint">실제 모임·공지 URL은 운영팀이 배포한 링크로 교체해 주세요.</p>
+        <ul class="community-links">
+          <li>
+            <a href="https://www.daangn.com/kr/" target="_blank" rel="noopener noreferrer">
+              당근마켓 커뮤니티 — 모집 · 양도
+            </a>
+          </li>
+          <li>
+            <a href="https://open.kakao.com/" target="_blank" rel="noopener noreferrer">
+              카카오톡 오픈채팅 — 일정 · 긴급 공지
+            </a>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+              Instagram — 소식 · 현장 스냅
+            </a>
+          </li>
+        </ul>
+      </div>
+      </div>
+      </div>
+    </main>
+
+    <footer class="site-footer-slim" role="contentinfo">
+      <p>© 2026 Scene by Scene · Yeoksam</p>
+      <div class="site-footer-slim-links">
+        <a href="index.html#programs">Scene of this week</a>
+        <a href="programs-detail.html">상세 프로그램</a>
+        <a href="index.html#rental">공간 소개</a>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
+      </div>
+    </footer>
+
+    <script src="site-header.js"></script>
+    <script>
+      (function () {
+        const tabs = document.querySelectorAll('.meetup-tab');
+        const panels = {
+          film: document.getElementById('panel-film'),
+          jazz: document.getElementById('panel-jazz'),
+          talk: document.getElementById('panel-talk'),
+        };
+
+        function show(key) {
+          tabs.forEach((t) => {
+            const on = t.dataset.panel === key;
+            t.classList.toggle('active', on);
+            t.setAttribute('aria-selected', on ? 'true' : 'false');
+          });
+          Object.keys(panels).forEach((k) => {
+            const p = panels[k];
+            const on = k === key;
+            p.classList.toggle('active', on);
+            p.hidden = !on;
+          });
+        }
+
+        tabs.forEach((tab) => {
+          tab.addEventListener('click', () => show(tab.dataset.panel));
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+/* Centered content column — matches main section width rhythm */
+.sub-page-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.sub-page-inner .page-lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sub-page-inner .filter-row,
+.sub-page-inner .meetup-tabs {
+  justify-content: center;
+}
+
+.sub-page-inner .session-list,
+.sub-page-inner .meetup-stack,
+.sub-page-inner .community-box {
+  text-align: left;
+}
+
+/* Slim shared footer for subpages — complements main site dark footer */
+.site-footer-slim {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.site-footer-slim p {
+  margin: 0;
+}
+
+.site-footer-slim-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
+
+.site-footer-slim-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.site-footer-slim-links a:hover {
+  color: var(--text);
+  border-bottom-color: var(--border);
+}

@@ -1,0 +1,2287 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light" style=""><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f2f0e9">
+    <title>Scene by Scene · Yeoksam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&amp;family=Noto+Sans+KR:wght@300;400;500;600;700&amp;family=Noto+Serif+KR:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #f2f0e9;
+        --bg-2: #e8e6df;
+        --bg-3: #dddad2;
+        --bg-card: #fffcf7;
+        --border: #c9c4ba;
+        --text: #0a0a0a;
+        --text-muted: #5c5a56;
+        --text-dim: #8a8880;
+        --accent: #0a0a0a;
+        --accent-green: #3d5c50;
+        --accent-rose: #6b4150;
+        --font-serif: 'Noto Serif KR', serif;
+        --font-sans: 'Noto Sans KR', sans-serif;
+        --font-display: 'Montserrat', 'Noto Sans KR', system-ui, sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-snap-type: y proximity;
+        scroll-padding-top: 112px;
+        -webkit-text-size-adjust: 100%;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-snap-type: none;
+        }
+        .marquee-content {
+          animation: none !important;
+        }
+      }
+
+      .skip-link {
+        position: absolute;
+        top: -100px;
+        left: max(12px, env(safe-area-inset-left));
+        z-index: 10000;
+        padding: 12px 20px;
+        background: var(--text);
+        color: var(--bg);
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: top 0.2s ease;
+      }
+
+      .skip-link:focus {
+        top: max(12px, env(safe-area-inset-top));
+        outline: none;
+      }
+
+      .skip-link:focus-visible {
+        outline: 2px solid var(--text);
+        outline-offset: 2px;
+        box-shadow:
+          0 0 0 2px var(--bg),
+          0 0 0 4px var(--text);
+      }
+
+      :is(a, button, input, textarea, select):focus {
+        outline: none;
+      }
+
+      :is(a, button, input, textarea, select, summary):focus-visible {
+        outline: 2px solid var(--text);
+        outline-offset: 2px;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        background-color: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+        font-weight: 300;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: var(--font-sans);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 14px 28px;
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid var(--text);
+        background: transparent;
+        color: var(--text);
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      .btn:hover {
+        background: var(--text);
+        color: var(--bg);
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #f2f0e9;
+      }
+
+      .btn-primary:hover {
+        background: transparent;
+        color: var(--accent);
+      }
+
+      /* Fade-up animation class */
+      .fade-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+      }
+      .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Header */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+        padding: 24px max(5%, env(safe-area-inset-left)) 24px max(5%, env(safe-area-inset-right));
+        padding-top: max(24px, env(safe-area-inset-top));
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.4s ease;
+        border-bottom: 1px solid transparent;
+      }
+
+      header.scrolled {
+        background: rgba(242, 240, 233, 0.94);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 16px max(5%, env(safe-area-inset-left)) 16px max(5%, env(safe-area-inset-right));
+        padding-top: max(16px, env(safe-area-inset-top));
+        border-bottom: 1px solid var(--border);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        line-height: 0;
+        flex-shrink: 0;
+      }
+
+      .logo img {
+        height: 96px;
+        width: auto;
+        max-width: min(390px, 58vw);
+        display: block;
+      }
+
+      nav {
+        display: flex;
+        gap: 40px;
+      }
+
+      .nav-item {
+        position: relative;
+      }
+
+      .nav-link {
+        font-size: 0.95rem;
+        padding: 10px 0;
+        display: block;
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--accent);
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background: var(--bg-2);
+        border: 1px solid var(--border);
+        min-width: min(220px, 92vw);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        padding: 12px 0;
+        text-align: center;
+        box-shadow: 0 12px 40px rgba(10, 10, 10, 0.12);
+      }
+
+      .nav-item:hover .dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      @media (min-width: 769px) {
+        .nav-item:focus-within .dropdown {
+          opacity: 1;
+          visibility: visible;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      .dropdown a {
+        display: block;
+        padding: 8px 20px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        transition: color 0.2s;
+      }
+
+      .dropdown a:hover {
+        color: var(--text);
+      }
+
+      .nav-icons {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .icon-btn {
+        background: none;
+        border: none;
+        color: var(--text);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+        margin: 0 -6px;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      .icon-btn svg {
+        width: 22px;
+        height: 22px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.5;
+      }
+
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 101;
+        padding: 10px;
+        margin: -10px -10px -10px 0;
+        min-width: 44px;
+        min-height: 44px;
+        justify-content: center;
+        align-items: center;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      .hamburger span {
+        width: 24px;
+        height: 1.5px;
+        background: var(--text);
+        transition: 0.3s;
+      }
+
+      /* Search Modal */
+      .search-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(242, 240, 233, 0.97);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s ease;
+      }
+
+      .search-modal.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .search-close {
+        position: absolute;
+        top: max(40px, env(safe-area-inset-top));
+        right: max(5%, env(safe-area-inset-right));
+        background: none;
+        border: none;
+        color: var(--text);
+        font-size: 2.5rem;
+        font-weight: 300;
+        cursor: pointer;
+        min-width: 48px;
+        min-height: 48px;
+        line-height: 1;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      .search-container {
+        width: min(92vw, 700px);
+        padding: 0 max(0px, env(safe-area-inset-left)) 0 max(0px, env(safe-area-inset-right));
+      }
+
+      .search-container input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--border);
+        font-size: clamp(1.125rem, 4.5vw, 2.5rem);
+        color: var(--text);
+        padding: 15px 0;
+        font-family: var(--font-sans);
+        outline: none;
+      }
+
+      .search-container input:focus {
+        border-bottom-color: var(--accent);
+      }
+
+      .search-tags {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 12px;
+      }
+
+      .search-tag {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        border: 1px solid var(--border);
+        padding: 8px 14px;
+        border-radius: 20px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      /* Hero */
+      .hero {
+        height: 100vh;
+        height: 100dvh;
+        min-height: -webkit-fill-available;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        text-align: center;
+        background: var(--bg);
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        opacity: 0.07;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 10;
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        width: 100%;
+        box-sizing: border-box;
+        /* 고정 헤더(로고 96px + 상하 패딩) 아래부터 콘텐츠 시작 */
+        --hero-header-clearance: calc(max(24px, env(safe-area-inset-top)) + 96px + 48px);
+        /* 버튼 줄이 SCROLL 표시와 겹치지 않도록: 인디케이터의 bottom 오프셋 + 높이·여유 */
+        --hero-scroll-indicator-offset: max(76px, calc(env(safe-area-inset-bottom) + 60px));
+        /* 로고·카피 사이는 좁게 (로고 1cm 하단 이동 분 보완해 본문 위치 유지) */
+        --hero-logo-to-copy: clamp(14px, 1.8vh, 28px);
+        --hero-title-to-sub: clamp(6px, 0.95em, 14px);
+        --hero-sub-to-buttons: clamp(36px, 5vh, 50px);
+        --hero-buttons-to-scroll: clamp(88px, 12vh, 118px);
+        padding-top: var(--hero-header-clearance);
+        padding-right: max(24px, 5%, env(safe-area-inset-right));
+        padding-bottom: calc(var(--hero-scroll-indicator-offset) + 2.85rem);
+        padding-left: max(24px, 5%, env(safe-area-inset-left));
+        gap: var(--hero-logo-to-copy);
+      }
+
+      .hero-brand {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-top: calc(1cm + clamp(10px, 1.5vh, 20px));
+        margin-bottom: 0;
+      }
+
+      .hero-copy {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: min(34rem, 100%);
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        padding-bottom: var(--hero-buttons-to-scroll);
+      }
+
+      .hero-logo-main {
+        display: block;
+        max-width: min(480px, 86vw);
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+      }
+
+      .hero h1 {
+        font-size: clamp(1.42rem, 4.25vw, 2.05rem);
+        line-height: 1.38;
+        letter-spacing: -0.025em;
+        margin: 0 0 var(--hero-title-to-sub) 0;
+        font-weight: 600;
+        word-break: keep-all;
+      }
+
+      .hero .hero-copy > p {
+        font-size: clamp(0.875rem, 2.65vw, 1.02rem);
+        line-height: 1.65;
+        color: var(--text-muted);
+        margin: 0 0 var(--hero-sub-to-buttons) 0;
+        max-width: 26em;
+        letter-spacing: 0.02em;
+        word-break: keep-all;
+      }
+
+      .hero-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: clamp(20px, 2.4vw, 24px);
+        justify-content: center;
+        align-items: stretch;
+      }
+
+      @media (min-width: 480px) {
+        .hero-buttons .btn {
+          min-width: 8.75rem;
+          padding-inline: clamp(22px, 4vw, 28px);
+        }
+      }
+
+      .scroll-indicator {
+        position: absolute;
+        bottom: max(76px, calc(env(safe-area-inset-bottom) + 60px));
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+      }
+
+      .scroll-indicator svg {
+        width: 24px;
+        height: 24px;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
+
+      .marquee {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 10px 0 max(10px, env(safe-area-inset-bottom));
+        border-top: 1px solid var(--border);
+        background: var(--bg-card);
+        z-index: 10;
+      }
+
+      .marquee-content {
+        display: inline-block;
+        padding-left: 100%;
+        animation: marquee-scroll 30s linear infinite;
+        font-size: clamp(0.62rem, 2.5vw, 0.72rem);
+        font-family: var(--font-display);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+      }
+
+      @keyframes marquee-scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .marquee:hover .marquee-content {
+          animation-play-state: paused;
+        }
+      }
+
+      /* Generic Section Styles */
+      section {
+        padding: 120px max(5%, env(safe-area-inset-left)) 120px max(5%, env(safe-area-inset-right));
+        position: relative;
+      }
+
+      section.snap-page {
+        min-height: 100vh;
+        min-height: 100dvh;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        padding: 92px max(5%, env(safe-area-inset-left)) max(48px, env(safe-area-inset-bottom))
+          max(5%, env(safe-area-inset-right));
+        padding-top: max(92px, calc(env(safe-area-inset-top) + 72px));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+
+      .hero.snap-page {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        padding: 0;
+        padding-bottom: env(safe-area-inset-bottom);
+        height: 100vh;
+        height: 100dvh;
+        min-height: 100vh;
+        min-height: 100dvh;
+      }
+
+      .programs.snap-page .programs-inner {
+        width: 100%;
+      }
+
+      /* 프로그램: 한 화면에 이어지는 섹션이 보이도록 세로를 압축 */
+      .programs.snap-page {
+        min-height: 0;
+        height: auto;
+        justify-content: flex-start;
+        padding-top: max(72px, calc(env(safe-area-inset-top) + 52px));
+        padding-bottom: max(40px, env(safe-area-inset-bottom));
+      }
+
+      .calendar-section.snap-page {
+        justify-content: flex-start;
+      }
+
+      .calendar-section.snap-page .section-header {
+        margin-bottom: 28px;
+      }
+
+      .calendar-section.snap-page .calendar-wrapper {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .classes.snap-page {
+        justify-content: flex-start;
+      }
+
+      /* SBS 소개만 별도 풀 스크린 — 공간 소개(#rental)는 다음 스냅 화면 */
+      .about-intro-stack.snap-page {
+        justify-content: flex-start;
+        min-height: 100vh;
+        min-height: 100dvh;
+        /* 우측 하단 본문이 뷰포트·스냅 경계에 잘리지 않도록 */
+        padding-bottom: max(72px, calc(env(safe-area-inset-bottom) + 40px));
+      }
+
+      .rental.snap-page {
+        justify-content: flex-start;
+        min-height: 100vh;
+        min-height: 100dvh;
+      }
+
+      footer.snap-page {
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+      }
+
+      footer.snap-page .footer-bottom {
+        margin-top: 0;
+      }
+
+      #about-sbs {
+        scroll-margin-top: 132px;
+      }
+
+      .section-header {
+        margin-bottom: 60px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .section-header h2 {
+        font-size: clamp(1.25rem, 4vw, 1.65rem);
+        white-space: nowrap;
+        font-family: var(--font-display);
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        word-break: keep-all;
+      }
+
+      .section-line {
+        height: 1px;
+        background: var(--border);
+        flex-grow: 1;
+      }
+
+      .about-intro-stack .section-header {
+        margin-bottom: 28px;
+        flex-shrink: 0;
+      }
+
+      .about-intro-stack .about-subhead {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-bottom: 0;
+        letter-spacing: 0.02em;
+      }
+
+      .about-intro-block + .about-intro-block {
+        margin-top: 40px;
+        padding-top: 36px;
+        border-top: 1px solid var(--border);
+      }
+
+      .about-intro-block--split {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        width: 100%;
+        padding-bottom: clamp(8px, 2dvh, 20px);
+      }
+
+      .about-intro-block--split .about-intro-copy--end {
+        margin-top: auto;
+        margin-left: auto;
+        margin-right: 0;
+        margin-bottom: clamp(4px, 1.5dvh, 12px);
+        max-width: min(30rem, 94%);
+        text-align: left;
+        padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+      }
+
+      .about-intro-copy {
+        max-width: 640px;
+        color: var(--text-muted);
+        font-size: 1rem;
+        line-height: 1.85;
+      }
+
+      .about-intro-copy p + p {
+        margin-top: 1em;
+      }
+
+      .about-intro-copy a {
+        color: var(--text);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .about-intro-copy a:hover {
+        color: var(--accent);
+      }
+
+      .read-more {
+        font-size: 0.9rem;
+        color: var(--text);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: color 0.3s;
+      }
+
+      .read-more:hover {
+        color: var(--accent);
+      }
+
+      /* Programs */
+      .programs {
+        background-color: var(--bg-2);
+      }
+
+      .programs .section-header {
+        justify-content: center;
+        margin-bottom: 18px;
+      }
+
+      .programs .section-line {
+        display: none;
+      }
+
+      .filter-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 12px;
+        margin-bottom: 22px;
+      }
+
+      .tab-btn {
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text-muted);
+        font-size: 0.88rem;
+        font-family: var(--font-sans);
+        cursor: pointer;
+        padding: 10px 18px;
+        min-height: 44px;
+        min-width: 44px;
+        transition:
+          color 0.2s,
+          background 0.2s,
+          border-color 0.2s;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      .tab-btn:hover {
+        color: var(--text);
+      }
+
+      .tab-btn.active {
+        background: var(--text);
+        color: var(--bg);
+        border-color: var(--text);
+      }
+
+      .programs-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: clamp(16px, 2.5vw, 22px);
+      }
+
+      .program-card {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .program-poster {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        background: linear-gradient(to bottom, #d4cfc4, #a8a29a);
+        position: relative;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .program-poster-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .poster-watermark {
+        font-family: var(--font-display);
+        font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+        color: rgba(255, 255, 255, 0.22);
+        text-align: center;
+        transform: rotate(-15deg);
+        line-height: 1.1;
+        width: 150%;
+      }
+
+      .status-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
+        background: var(--bg-card);
+        color: var(--text);
+        font-size: 0.7rem;
+        padding: 4px 10px;
+        border: 1px solid var(--border);
+      }
+
+      .program-card h4 {
+        font-size: clamp(1rem, 2.2vw, 1.08rem);
+        margin-bottom: 6px;
+        line-height: 1.3;
+      }
+
+      .program-date {
+        font-size: 0.8rem;
+        color: var(--accent);
+        margin-bottom: 8px;
+      }
+
+      .program-synopsis {
+        font-size: 0.85rem;
+        line-height: 1.5;
+        color: var(--text-muted);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 12px;
+        flex-grow: 1;
+      }
+
+      /* Classes */
+      .classes {
+        background-color: var(--bg-card);
+        color: var(--text);
+      }
+
+      .classes .section-header h2 {
+        color: var(--text);
+      }
+
+      .classes .section-line {
+        background: var(--border);
+      }
+
+      .classes-container {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .class-card {
+        display: flex;
+        gap: 40px;
+        padding: 40px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        align-items: center;
+      }
+
+      .class-number {
+        font-family: var(--font-display);
+        font-size: 4rem;
+        color: var(--border);
+        line-height: 1;
+      }
+
+      .class-info {
+        flex-grow: 1;
+      }
+
+      .class-info h4 {
+        font-size: 1.6rem;
+        margin-bottom: 10px;
+      }
+
+      .class-meta {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 15px;
+      }
+
+      .class-meta span {
+        display: inline-block;
+        margin-right: 15px;
+      }
+
+      .class-desc {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+      }
+
+      .class-action {
+        text-align: right;
+        min-width: 200px;
+      }
+
+      .class-price {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 15px;
+      }
+
+      .classes .btn-primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #f2f0e9;
+      }
+      .classes .btn-primary:hover {
+        background: transparent;
+        color: var(--accent);
+      }
+
+      /* Calendar */
+      .calendar-section {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .calendar-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .calendar-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: clamp(14px, 2.5vw, 30px);
+        gap: 8px;
+      }
+
+      .cal-nav {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 10px 16px;
+        cursor: pointer;
+        font-family: var(--font-sans);
+        transition: background 0.3s;
+        min-height: 44px;
+        font-size: 0.85rem;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      .cal-nav:hover {
+        background: var(--bg-2);
+      }
+
+      #cal-month-year {
+        font-family: var(--font-display);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        font-size: clamp(1.1rem, 2.8vw, 1.65rem);
+        white-space: nowrap;
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        width: 100%;
+        border-top: 1px solid var(--border);
+        border-left: 1px solid var(--border);
+      }
+
+      .cal-header {
+        padding: clamp(6px, 1.2vw, 15px) clamp(3px, 0.8vw, 10px);
+        text-align: center;
+        font-size: clamp(0.62rem, 1.8vw, 0.85rem);
+        color: var(--text-muted);
+        border-right: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-2);
+        min-width: 0;
+      }
+
+      .cal-cell {
+        min-height: clamp(52px, 11vh, 120px);
+        min-width: 0;
+        padding: clamp(4px, 1vw, 10px) clamp(3px, 0.7vw, 8px);
+        border-right: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        background: var(--bg);
+      }
+
+      .cal-cell.empty {
+        background: var(--bg-3);
+      }
+
+      .cal-date {
+        font-size: clamp(0.7rem, 2vw, 0.9rem);
+        color: var(--text-dim);
+        margin-bottom: clamp(4px, 1vw, 8px);
+        display: block;
+      }
+
+      .cal-event {
+        font-size: clamp(0.58rem, 1.55vw, 0.75rem);
+        padding: clamp(2px, 0.5vw, 4px) clamp(3px, 0.8vw, 8px);
+        margin-bottom: 2px;
+        background: var(--bg-2);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+
+      .event-screening {
+        border-left: 2px solid var(--accent);
+      }
+      .event-meetup {
+        border-left: 2px solid var(--accent-green);
+      }
+      .event-class {
+        border-left: 2px solid var(--accent-rose);
+      }
+
+      .cal-legend {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: clamp(8px, 2vw, 24px);
+        margin-top: clamp(12px, 2.5vw, 30px);
+        font-size: clamp(0.7rem, 2vw, 0.85rem);
+        color: var(--text-muted);
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .legend-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+
+      /* Rental */
+      .rental-layout {
+        display: flex;
+        gap: 80px;
+        align-items: center;
+      }
+
+      .rental.snap-page .rental-layout {
+        flex: 1;
+        width: 100%;
+        align-items: center;
+        min-height: 0;
+      }
+
+      .rental-img {
+        width: 50%;
+        height: 600px;
+        margin: 0;
+        position: relative;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        background: var(--bg-3);
+      }
+
+      .rental-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+
+      .rental-info {
+        width: 50%;
+      }
+
+      .rental-info h3 {
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+      }
+
+      .rental-list {
+        margin-bottom: 40px;
+      }
+
+      .rental-list li {
+        display: flex;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .rental-list .label {
+        width: 120px;
+        color: var(--text-muted);
+      }
+
+      .rental-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 40px;
+      }
+
+      .r-tag {
+        font-size: 0.8rem;
+        padding: 6px 14px;
+        background: var(--bg-2);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        color: var(--text-muted);
+      }
+
+      /* Footer */
+      footer {
+        background: #0a0a0a;
+        padding: 64px max(5%, env(safe-area-inset-left)) max(28px, env(safe-area-inset-bottom))
+          max(5%, env(safe-area-inset-right));
+        border-top: 1px solid #2a2a2a;
+        --text: #f2f0e9;
+        --text-muted: #b0aea8;
+        --text-dim: #8a8880;
+        --border: #333333;
+        --accent: #f2f0e9;
+        --bg-2: #151515;
+        color: #f2f0e9;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr;
+        align-items: start;
+        gap: clamp(36px, 5vw, 60px);
+        margin-bottom: 28px;
+      }
+
+      .footer-logo {
+        display: block;
+        width: min(240px, 46vw);
+        max-width: min(240px, 46vw);
+        height: auto;
+        aspect-ratio: 1;
+        object-fit: contain;
+        object-position: center;
+        margin-bottom: 20px;
+        /* 원 밖(캔버스 모서리 등)은 잘라내고, 안쪽 베이지·그래픽은 PNG 그대로(필터 없음) */
+        clip-path: circle(50% at 50% 50%);
+        -webkit-clip-path: circle(50% at 50% 50%);
+      }
+
+      .f-brand p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        line-height: 1.8;
+      }
+
+      .f-links h5,
+      .f-social h5 {
+        font-size: 1rem;
+        margin-bottom: 20px;
+        color: var(--text-muted);
+        font-weight: 400;
+      }
+
+      .f-links ul li {
+        margin-bottom: 12px;
+      }
+      .f-links a {
+        color: var(--text-dim);
+        transition: color 0.3s;
+        font-size: 0.9rem;
+      }
+      .f-links a:hover {
+        color: var(--text);
+      }
+
+      .social-links {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .social-links a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-dim);
+        font-size: 0.9rem;
+        transition: color 0.3s;
+      }
+
+      .social-links a:hover {
+        color: var(--text);
+      }
+      .social-links svg {
+        width: 18px;
+        height: 18px;
+        fill: currentColor;
+      }
+
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 22px;
+        border-top: 1px solid var(--border);
+        font-size: 0.8rem;
+        color: var(--text-dim);
+      }
+
+      .nav-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 99;
+        background: rgba(10, 10, 10, 0.42);
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .nav-backdrop.is-active {
+        display: block;
+      }
+
+      @media (min-width: 769px) {
+        .nav-backdrop {
+          display: none !important;
+        }
+      }
+
+      body.menu-open {
+        overflow: hidden;
+      }
+
+      @media (min-width: 769px) {
+        body.menu-open {
+          overflow: auto;
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        html {
+          scroll-padding-top: 104px;
+        }
+
+        nav {
+          gap: 28px;
+        }
+
+        .section-header {
+          margin-bottom: 36px;
+        }
+
+        .programs-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+        }
+
+        .rental-layout {
+          flex-direction: column;
+          gap: 32px;
+        }
+
+        .rental-img,
+        .rental-info {
+          width: 100%;
+        }
+
+        .rental-img {
+          height: min(420px, 55vw);
+        }
+
+        .footer-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 40px;
+        }
+
+        .f-brand {
+          grid-column: 1 / -1;
+        }
+
+      }
+
+      @media (max-width: 768px) {
+        html {
+          scroll-padding-top: 96px;
+        }
+
+        .logo img {
+          height: 78px;
+          max-width: min(330px, 56vw);
+        }
+
+        .hero-content {
+          --hero-header-clearance: calc(max(24px, env(safe-area-inset-top)) + 78px + 48px);
+        }
+
+        .hamburger {
+          display: flex;
+        }
+
+        nav {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: min(100%, 20.5rem);
+          height: 100vh;
+          height: 100dvh;
+          max-width: 100%;
+          background: var(--bg-2);
+          flex-direction: column;
+          gap: 0;
+          padding: max(5.5rem, calc(env(safe-area-inset-top) + 4.5rem)) max(24px, env(safe-area-inset-right))
+            32px max(20px, env(safe-area-inset-left));
+          transition: right 0.35s ease;
+          border-left: 1px solid var(--border);
+          box-shadow: -8px 0 32px rgba(10, 10, 10, 0.12);
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+          z-index: 102;
+        }
+
+        nav.active {
+          right: 0;
+        }
+
+        .nav-item {
+          border-bottom: 1px solid var(--border);
+        }
+
+        .nav-link {
+          font-size: 1.05rem;
+          padding: 16px 0;
+          min-height: 48px;
+          display: flex;
+          align-items: center;
+          border-bottom: none;
+        }
+
+        .dropdown {
+          position: static;
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+          border: none;
+          background: transparent;
+          box-shadow: none;
+          text-align: left;
+          padding: 0 0 16px 4px;
+          display: block;
+        }
+
+        .dropdown a {
+          padding: 12px 8px 12px 16px;
+          font-size: 0.9rem;
+          border-radius: 6px;
+          min-height: 44px;
+          display: flex;
+          align-items: center;
+        }
+
+        .nav-item:hover .dropdown {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        section:not(.hero) {
+          padding: 72px max(4%, env(safe-area-inset-left)) 72px max(4%, env(safe-area-inset-right));
+        }
+
+        section.snap-page:not(.hero) {
+          padding: 72px max(4%, env(safe-area-inset-left)) max(28px, env(safe-area-inset-bottom))
+            max(4%, env(safe-area-inset-right));
+          padding-top: max(72px, calc(env(safe-area-inset-top) + 52px));
+        }
+
+        .section-header h2 {
+          white-space: normal;
+          line-height: 1.35;
+        }
+
+        .section-line {
+          display: none;
+        }
+
+        .programs .section-header {
+          margin-bottom: 24px;
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+          align-items: stretch;
+          width: 100%;
+          max-width: 320px;
+          margin: 0 auto;
+        }
+
+        .hero-buttons .btn {
+          width: 100%;
+        }
+
+        .class-card {
+          flex-direction: column;
+          gap: 20px;
+          align-items: flex-start;
+          padding: 28px 20px;
+        }
+
+        .class-action {
+          text-align: left;
+          width: 100%;
+          min-width: 0;
+        }
+
+        .class-action .btn-primary {
+          width: 100%;
+        }
+
+        .class-number {
+          font-size: 2.75rem;
+        }
+
+        .class-info h4 {
+          font-size: clamp(1.15rem, 4vw, 1.5rem);
+        }
+
+        .calendar-section.snap-page .section-header {
+          margin-bottom: 16px;
+        }
+
+        .calendar-controls {
+          flex-wrap: wrap;
+          gap: 8px 10px;
+          justify-content: center;
+          margin-bottom: 12px;
+        }
+
+        #cal-month-year {
+          order: -1;
+          width: 100%;
+          text-align: center;
+          font-size: clamp(1.05rem, 4vw, 1.25rem);
+        }
+
+        .calendar-section .calendar-wrapper {
+          overflow: visible;
+          max-width: 100%;
+        }
+
+        .calendar-grid {
+          width: 100%;
+        }
+
+        .cal-header {
+          padding: 5px 2px;
+          font-size: clamp(0.55rem, 2.4vw, 0.7rem);
+        }
+
+        .cal-cell {
+          min-height: clamp(30px, calc((100dvh - 248px) / 6.5), 72px);
+          padding: 3px 2px;
+        }
+
+        .cal-date {
+          margin-bottom: 2px;
+        }
+
+        .cal-event {
+          font-size: 0px;
+          height: 6px;
+          width: 6px;
+          border-radius: 50%;
+          padding: 0;
+          display: inline-block;
+          margin-right: 2px;
+          border: none !important;
+        }
+
+        .cal-event.event-screening {
+          background: var(--accent);
+        }
+
+        .cal-event.event-meetup {
+          background: var(--accent-green);
+        }
+
+        .cal-event.event-class {
+          background: var(--accent-rose);
+        }
+
+        .cal-legend {
+          margin-top: 10px;
+          gap: 8px 14px;
+          font-size: 0.68rem;
+        }
+
+        .calendar-section.snap-page {
+          padding-bottom: max(20px, env(safe-area-inset-bottom));
+        }
+
+        .programs-grid {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+
+        .rental-img {
+          height: min(280px, 42vh);
+          min-height: 200px;
+        }
+
+        .rental-info h3 {
+          font-size: clamp(1.35rem, 5vw, 2rem);
+        }
+
+        .rental-list li {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 6px;
+        }
+
+        .rental-list .label {
+          width: 100%;
+        }
+
+        .about-intro-stack .about-subhead {
+          font-size: 1.05rem;
+        }
+
+        .about-intro-copy {
+          font-size: 0.95rem;
+        }
+
+        .about-intro-block--split .about-intro-copy--end {
+          margin-left: auto;
+          margin-right: 0;
+          max-width: min(30rem, 100%);
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+          gap: 36px;
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+          gap: 15px;
+          text-align: center;
+          align-items: center;
+        }
+
+        .footer-logo {
+          width: min(240px, 58vw);
+          max-width: min(240px, 58vw);
+        }
+
+        .search-container input {
+          font-size: max(16px, 1.125rem);
+        }
+
+        #about-sbs {
+          scroll-margin-top: 104px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .filter-tabs {
+          gap: 8px 14px;
+        }
+
+        .tab-btn {
+          font-size: 0.92rem;
+        }
+
+        .marquee-content {
+          letter-spacing: 0.14em;
+        }
+
+        .poster-watermark {
+          font-size: 1.75rem;
+        }
+
+        .cal-nav {
+          padding: 8px 12px;
+          font-size: 0.8rem;
+        }
+      }
+
+      @media (max-width: 768px) and (max-height: 560px) {
+        .calendar-section.snap-page .section-header {
+          margin-bottom: 8px;
+        }
+
+        .calendar-controls {
+          margin-bottom: 6px;
+        }
+
+        .cal-cell {
+          min-height: clamp(22px, calc((100dvh - 200px) / 7), 56px);
+          padding: 2px 1px;
+        }
+
+        .cal-legend {
+          margin-top: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body style="">
+    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+    <!-- Header -->
+    <header id="header">
+      <a href="index.html" class="logo" aria-label="Scene by Scene 홈">
+        <img src="scene-by-scene-logo.png" alt="Scene by Scene — Yeoksam" width="778" height="401" decoding="async">
+      </a>
+      <nav id="nav">
+        <div class="nav-item">
+          <a href="#programs" class="nav-link" aria-haspopup="true">프로그램</a>
+          <div class="dropdown">
+            <a href="#programs">Scene of this week</a>
+            <a href="programs-detail.html?scene=film"><span aria-hidden="true">🎬</span> Scene: Film</a>
+            <a href="programs-detail.html?scene=jazz"><span aria-hidden="true">🎷</span> Scene: Jazz</a>
+            <a href="programs-detail.html?scene=talk"><span aria-hidden="true">🧠</span> Scene: Talk</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="#calendar" class="nav-link" aria-haspopup="true">커뮤니티</a>
+          <div class="dropdown">
+            <a href="#calendar">월간 일정</a>
+            <a href="meetups.html">정규 모임</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="#classes" class="nav-link" aria-haspopup="true">클래스</a>
+          <div class="dropdown">
+            <a href="#class-critic">영화 비평</a>
+            <a href="#class-scenario">시나리오</a>
+            <a href="#class-production">제작 실습</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="#about-sbs" class="nav-link" aria-haspopup="true">소개</a>
+          <div class="dropdown">
+            <a href="#about-sbs">Scene by Scene</a>
+            <a href="#rental">Scene by Scene 공간 소개</a>
+          </div>
+        </div>
+      </nav>
+      <div class="nav-icons">
+        <button class="icon-btn" id="search-btn" type="button" aria-label="검색 열기">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <button class="hamburger" id="mobile-btn" type="button" aria-label="메뉴 열기"><span></span><span></span><span></span></button>
+      </div>
+    </header>
+
+    <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="검색">
+      <button class="search-close" id="search-close" type="button" aria-label="검색 닫기">×</button>
+      <div class="search-container">
+        <input type="search" placeholder="검색어를 입력하세요..." autocomplete="off" autofocus="">
+        <div class="search-tags">
+          <span class="search-tag">괴물</span>
+          <span class="search-tag">에릭 로메르</span>
+          <span class="search-tag">비평 워크숍</span>
+          <span class="search-tag">공간 대관</span>
+        </div>
+      </div>
+    </div>
+
+    <main id="main">
+    <!-- Hero Section -->
+    <section class="hero snap-page">
+      <div class="hero-content fade-up visible">
+        <div class="hero-brand">
+          <img
+            class="hero-logo-main"
+            src="scene-by-scene-logo.png"
+            alt=""
+            width="778"
+            height="401"
+            decoding="async"
+          >
+        </div>
+        <div class="hero-copy">
+          <h1>영화와 사람이<br>만나는 공간</h1>
+          <p>프레임 너머의 이야기를 나누는 마이크로 시네마 커뮤니티</p>
+          <div class="hero-buttons">
+            <a href="#programs" class="btn btn-primary">This week</a>
+            <a href="#classes" class="btn">클래스 안내</a>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span>SCROLL</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <div class="marquee">
+        <div class="marquee-content">
+          Scene by Scene · Yeoksam · 독립영화 · 마이크로시네마 · 커뮤니티 · 상영 · 클래스 · 공간대여 · Scene by Scene ·
+          Yeoksam · 독립영화 · 마이크로시네마 · 상영 · 클래스 · 공간대여 ·
+        </div>
+      </div>
+    </section>
+
+    <!-- Programs -->
+    <section class="programs fade-up snap-page" id="programs">
+      <div class="programs-inner">
+      <div class="section-header">
+        <h2>Scene of this week</h2>
+      </div>
+      <div class="filter-tabs" role="toolbar" aria-label="Scene of this week 필터">
+        <button type="button" class="tab-btn active" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="tab-btn" data-filter="movie" aria-pressed="false">Movie</button>
+        <button type="button" class="tab-btn" data-filter="music" aria-pressed="false">Music</button>
+      </div>
+      <div class="programs-grid">
+        <div class="program-card" data-category="movie">
+          <div class="program-poster">
+            <img class="program-poster-img" src="program-week-monster.png" alt="영화 괴물 포스터 — 들판에서 뛰는 아이들과 타이포그래피" width="800" height="600" loading="lazy" decoding="async" />
+            <span class="status-badge">상영중</span>
+          </div>
+          <h4>괴물 (Monster)</h4>
+          <div class="program-date">2026.04.01 ~ 04.15</div>
+          <p class="program-synopsis">
+            고레에다 히로카즈 감독의 시선이 머무는 곳. 하나의 사건, 세 개의 시선으로 재구성되는 진실의 조각들.
+          </p>
+          <a href="programs-detail.html?scene=film" class="read-more">상세 · 문의 →</a>
+        </div>
+        <div class="program-card" data-category="music">
+          <div class="program-poster">
+            <img class="program-poster-img" src="program-week-jazz-miles.png" alt="Workin’ with the Miles Davis Quintet 앨범 커버; 블루 톤의 스트리트 초상" width="600" height="600" loading="lazy" decoding="async" />
+            <span class="status-badge">LIVE</span>
+          </div>
+          <h4><span aria-hidden="true">🎷</span> Scene: Jazz — Late Session</h4>
+          <div class="program-date">2026.04.11 · 금 21:00</div>
+          <p class="program-synopsis">
+            쿼텟 라이브와 단편 필름 스코어를 엮은 금요일 밤. 스크린 밖에서도 이어지는 리듬과 즉흥.
+          </p>
+          <a href="programs-detail.html?scene=jazz" class="read-more">상세 · 문의 →</a>
+        </div>
+        <div class="program-card" data-category="movie">
+          <div class="program-poster">
+            <img class="program-poster-img" src="program-week-master-world.png" alt="영화 세계의 주인 포스터 — 가시와 장미, 유리 큐브 속 초현실적 구도" width="800" height="1200" loading="lazy" decoding="async" />
+            <span class="status-badge">상영중</span>
+          </div>
+          <h4>세계의 주인 (Master of the World)</h4>
+          <div class="program-date">2026.04.08 ~ 04.22</div>
+          <p class="program-synopsis">
+            윤가은 감독 작품. 한 소녀와 겹쳐 보이는 자아들, 장미와 가시로 둘러싸인 세계의 주인에 대한 이야기.
+          </p>
+          <a href="programs-detail.html?scene=film" class="read-more">상세 · 문의 →</a>
+        </div>
+        <div class="program-card" data-category="movie">
+          <div class="program-poster">
+            <img class="program-poster-img" src="program-week-talk-panel.png" alt="아시아문화센터 행사 — 마이크를 든 발표자와 경청하는 관객의 패널 장면" width="1200" height="675" loading="lazy" decoding="async" />
+            <span class="status-badge">토크</span>
+          </div>
+          <h4>ACC × Scene by Scene 토크</h4>
+          <div class="program-date">2026.04.05 · 토 15:00</div>
+          <p class="program-synopsis">독립영화·마이크로 시네마를 주제로 한 대화와 네트워킹. 어둠 속 스포트라이트 아래의 한 장면.</p>
+          <a href="programs-detail.html?scene=film" class="read-more">상세 · 문의 →</a>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- Calendar -->
+    <section class="calendar-section fade-up snap-page" id="calendar">
+      <div class="section-header">
+        <h2>월간 일정</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="calendar-wrapper">
+        <div class="calendar-controls">
+          <button type="button" class="cal-nav" id="prev-month" aria-label="이전 달">← Prev</button>
+          <h3 id="cal-month-year">2026. 04</h3>
+          <button type="button" class="cal-nav" id="next-month" aria-label="다음 달">Next →</button>
+        </div>
+        <div class="calendar-grid" id="cal-grid">
+          <div class="cal-header">SUN</div>
+          <div class="cal-header">MON</div>
+          <div class="cal-header">TUE</div>
+          <div class="cal-header">WED</div>
+          <div class="cal-header">THU</div>
+          <div class="cal-header">FRI</div>
+          <div class="cal-header">SAT</div>
+          <!-- Cells generated by JS -->
+        <div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell"><span class="cal-date">1</span></div><div class="cal-cell"><span class="cal-date">2</span><div class="cal-event event-class">영화 비평 워크숍</div><div class="cal-event event-screening">심야상영</div></div><div class="cal-cell"><span class="cal-date">3</span></div><div class="cal-cell"><span class="cal-date">4</span><div class="cal-event event-screening">괴물 GV</div></div><div class="cal-cell"><span class="cal-date">5</span><div class="cal-event event-screening">심야상영</div></div><div class="cal-cell"><span class="cal-date">6</span></div><div class="cal-cell"><span class="cal-date">7</span></div><div class="cal-cell"><span class="cal-date">8</span></div><div class="cal-cell"><span class="cal-date">9</span><div class="cal-event event-class">영화 비평 워크숍</div></div><div class="cal-cell"><span class="cal-date">10</span></div><div class="cal-cell"><span class="cal-date">11</span><div class="cal-event event-screening">심야상영</div></div><div class="cal-cell"><span class="cal-date">12</span><div class="cal-event event-screening">심야상영</div></div><div class="cal-cell"><span class="cal-date">13</span></div><div class="cal-cell"><span class="cal-date">14</span></div><div class="cal-cell"><span class="cal-date">15</span><div class="cal-event event-class">시나리오 클래스</div><div class="cal-event event-meetup">독립영화 모임</div></div><div class="cal-cell"><span class="cal-date">16</span><div class="cal-event event-class">영화 비평 워크숍</div><div class="cal-event event-screening">에릭 로메르 개막</div></div><div class="cal-cell"><span class="cal-date">17</span></div><div class="cal-cell"><span class="cal-date">18</span></div><div class="cal-cell"><span class="cal-date">19</span><div class="cal-event event-screening">심야상영</div></div><div class="cal-cell"><span class="cal-date">20</span></div><div class="cal-cell"><span class="cal-date">21</span></div><div class="cal-cell"><span class="cal-date">22</span></div><div class="cal-cell"><span class="cal-date">23</span><div class="cal-event event-class">영화 비평 워크숍</div></div><div class="cal-cell"><span class="cal-date">24</span></div><div class="cal-cell"><span class="cal-date">25</span><div class="cal-event event-screening">심야상영</div></div><div class="cal-cell"><span class="cal-date">26</span><div class="cal-event event-class">시나리오 클래스</div><div class="cal-event event-screening">심야상영</div></div><div class="cal-cell"><span class="cal-date">27</span><div class="cal-event event-meetup">정규 모임</div></div><div class="cal-cell"><span class="cal-date">28</span></div><div class="cal-cell"><span class="cal-date">29</span></div><div class="cal-cell"><span class="cal-date">30</span></div></div>
+        <div class="cal-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background: var(--accent)"></div>
+            상영
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: var(--accent-rose)"></div>
+            클래스
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: var(--accent-green)"></div>
+            커뮤니티 모임
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-intro-stack fade-up snap-page">
+      <div class="section-header">
+        <h2>Scene by Scene 소개</h2>
+        <div class="section-line"></div>
+      </div>
+      <div id="about-sbs" class="about-intro-block about-intro-block--split">
+        <h3 class="about-subhead">Scene by Scene</h3>
+        <div class="about-intro-copy about-intro-copy--end">
+          <p>
+            Yeoksam, Seoul — 독립영화와 마이크로 시네마에 초점을 둔 커뮤니티 공간입니다. 필름·재즈·토크 등 장르별 Scene
+            프로그램과 클래스, 정규 모임을 통해 프레임 안팎의 이야기를 나눕니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Space Rental -->
+    <section class="rental fade-up snap-page" id="rental">
+      <div class="rental-layout">
+        <figure class="rental-img">
+          <img
+            src="rental-cinema-space.png"
+            alt="Scene by Scene 프라이빗 시네마 상영 공간"
+            width="1600"
+            height="900"
+            loading="lazy"
+            decoding="async"
+          >
+        </figure>
+        <div class="rental-info">
+          <h3>Scene by Scene 공간 소개</h3>
+          <div class="rental-tags">
+            <span class="r-tag">4K 레이저 프로젝터</span>
+            <span class="r-tag">돌비 7.1ch</span>
+            <span class="r-tag">마이크 PA</span>
+            <span class="r-tag">라운지 바</span>
+            <span class="r-tag">자연채광 대기실</span>
+          </div>
+          <ul class="rental-list">
+            <li>
+              <span class="label">수용 인원</span>
+              <span>최대 35석 (가변형 좌석 배치 가능)</span>
+            </li>
+            <li>
+              <span class="label">운영 시간</span>
+              <span>10:00 - 22:00 (사전 협의 시 연장 가능)</span>
+            </li>
+            <li>
+              <span class="label">이용 요금</span>
+              <span>시간당 10만원 (최소 2시간부터 대관)</span>
+            </li>
+            <li>
+              <span class="label">용도</span>
+              <span>프라이빗 상영회, 소규모 GV, 강연, 워크숍, 네트워킹</span>
+            </li>
+          </ul>
+          <button class="btn btn-primary">대관 문의하기</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Classes -->
+    <section class="classes fade-up snap-page" id="classes">
+      <div class="section-header">
+        <h2>클래스 &amp; 워크숍</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="classes-container">
+        <div class="class-card" id="class-critic">
+          <div class="class-number">01</div>
+          <div class="class-info">
+            <h4>영화 비평 워크숍</h4>
+            <div class="class-meta">
+              <span><strong>강사</strong> 정지혜 영화평론가</span>
+              <span><strong>기간</strong> 6주 · 매주 수요일</span>
+            </div>
+            <p class="class-desc">
+              영화를 '보는 것'에서 '읽는 것'으로. 단편적인 감상을 넘어 자신만의 언어로 영화를 리뷰하는 방법론을
+              배웁니다.
+            </p>
+          </div>
+          <div class="class-action">
+            <span class="class-price">150,000원</span>
+            <button class="btn btn-primary">신청하기</button>
+          </div>
+        </div>
+        <div class="class-card" id="class-scenario">
+          <div class="class-number">02</div>
+          <div class="class-info">
+            <h4>시나리오 마스터클래스</h4>
+            <div class="class-meta">
+              <span><strong>강사</strong> 김보라 감독</span>
+              <span><strong>기간</strong> 8주 · 매주 토요일</span>
+            </div>
+            <p class="class-desc">
+              단편영화 시나리오 완성을 목표로 하는 실전 창작 워크숍. 아이디에이션, 로그라인부터 초고 작성 및 합평까지
+              진행됩니다.
+            </p>
+          </div>
+          <div class="class-action">
+            <span class="class-price">250,000원</span>
+            <button class="btn btn-primary">신청하기</button>
+          </div>
+        </div>
+        <div class="class-card" id="class-production">
+          <div class="class-number">03</div>
+          <div class="class-info">
+            <h4>독립영화 제작 기초</h4>
+            <div class="class-meta">
+              <span><strong>강사</strong> 박촬영 감독</span>
+              <span><strong>기간</strong> 4주 · 매주 일요일</span>
+            </div>
+            <p class="class-desc">
+              스마트폰과 기본 미러리스 장비를 활용한 마이크로버짓 단편영화 제작 A to Z. 기획, 촬영, 간단한 편집 실습
+              포함.
+            </p>
+          </div>
+          <div class="class-action">
+            <span class="class-price">120,000원</span>
+            <button class="btn btn-primary">신청하기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="snap-page" id="site-footer">
+      <div class="footer-grid fade-up">
+        <div class="f-brand">
+          <img
+            class="footer-logo"
+            src="scene-by-scene-footer-mark.png"
+            alt="Scene by Scene · Yeoksam"
+            width="400"
+            height="400"
+            decoding="async"
+          >
+          <p>
+            강남구 역삼 — 마이크로 시네마 · 커뮤니티<br>
+            영화와 사람이 한 프레임씩 만나는 공간<br>
+            사업자등록번호: 123-45-67890
+          </p>
+        </div>
+        <div class="f-links">
+          <h5>메뉴</h5>
+          <ul>
+            <li><a href="#programs">Scene of this week</a></li>
+            <li><a href="programs-detail.html">상세 프로그램</a></li>
+            <li><a href="#calendar">월간 일정</a></li>
+            <li><a href="meetups.html">정규 모임</a></li>
+            <li><a href="#classes">클래스</a></li>
+            <li><a href="#about-sbs">Scene by Scene 소개</a></li>
+            <li><a href="#rental">Scene by Scene 공간 소개</a></li>
+          </ul>
+        </div>
+        <div class="f-social">
+          <h5>소셜</h5>
+          <div class="social-links">
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path>
+              </svg>
+              Instagram
+            </a>
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"></path>
+              </svg>
+              YouTube
+            </a>
+            <a href="https://brunch.co.kr/" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"></path>
+              </svg>
+              Brunch
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Scene by Scene · Yeoksam. All rights reserved.</span>
+        <span style="color:var(--text-dim); font-size:0.85rem">
+          개인정보처리방침 · 이용약관 <span id="legal-placeholder">(정식 오픈 시 게시 예정)</span>
+        </span>
+      </div>
+    </footer>
+
+    <script>
+      /* ===== HEADER SCROLL ===== */
+      const header = document.getElementById('header');
+      window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 60);
+      });
+
+      /* ===== MOBILE MENU ===== */
+      const mobileBtn = document.getElementById('mobile-btn');
+      const nav = document.getElementById('nav');
+      const navBackdrop = document.getElementById('nav-backdrop');
+
+      function setMenuOpen(open) {
+        nav.classList.toggle('active', open);
+        mobileBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (navBackdrop) {
+          navBackdrop.classList.toggle('is-active', open);
+          navBackdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+        }
+        document.body.classList.toggle('menu-open', open);
+      }
+
+      mobileBtn.setAttribute('aria-expanded', 'false');
+      mobileBtn.setAttribute('aria-controls', 'nav');
+
+      mobileBtn.addEventListener('click', () => {
+        setMenuOpen(!nav.classList.contains('active'));
+      });
+
+      if (navBackdrop) {
+        navBackdrop.addEventListener('click', () => setMenuOpen(false));
+      }
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) setMenuOpen(false);
+      });
+
+      /* ===== SEARCH MODAL ===== */
+      const searchBtn = document.getElementById('search-btn');
+      const searchModal = document.getElementById('search-modal');
+      const searchClose = document.getElementById('search-close');
+
+      searchBtn.addEventListener('click', () => {
+        searchModal.classList.add('active');
+        setTimeout(() => searchModal.querySelector('input').focus(), 300);
+      });
+      searchClose.addEventListener('click', () => searchModal.classList.remove('active'));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          searchModal.classList.remove('active');
+          setMenuOpen(false);
+        }
+      });
+      document.querySelectorAll('.search-tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+          searchModal.querySelector('input').value = tag.textContent;
+          searchModal.querySelector('input').focus();
+        });
+      });
+
+      /* ===== PROGRAM FILTER ===== */
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const programCards = document.querySelectorAll('.program-card');
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-pressed', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-pressed', 'true');
+          const filter = btn.dataset.filter;
+          programCards.forEach(card => {
+            card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+          });
+        });
+      });
+
+      /* ===== CALENDAR ===== */
+      const eventData = {
+        '2026-04-02': [
+          { title: '영화 비평 워크숍', type: 'event-class' },
+          { title: '심야상영', type: 'event-screening' }
+        ],
+        '2026-04-04': [{ title: '괴물 GV', type: 'event-screening' }],
+        '2026-04-05': [{ title: '심야상영', type: 'event-screening' }],
+        '2026-04-09': [{ title: '영화 비평 워크숍', type: 'event-class' }],
+        '2026-04-11': [{ title: '심야상영', type: 'event-screening' }],
+        '2026-04-12': [{ title: '심야상영', type: 'event-screening' }],
+        '2026-04-15': [
+          { title: '시나리오 클래스', type: 'event-class' },
+          { title: '독립영화 모임', type: 'event-meetup' }
+        ],
+        '2026-04-16': [
+          { title: '영화 비평 워크숍', type: 'event-class' },
+          { title: '에릭 로메르 개막', type: 'event-screening' }
+        ],
+        '2026-04-19': [{ title: '심야상영', type: 'event-screening' }],
+        '2026-04-23': [{ title: '영화 비평 워크숍', type: 'event-class' }],
+        '2026-04-25': [{ title: '심야상영', type: 'event-screening' }],
+        '2026-04-26': [
+          { title: '시나리오 클래스', type: 'event-class' },
+          { title: '심야상영', type: 'event-screening' }
+        ],
+        '2026-04-27': [{ title: '정규 모임', type: 'event-meetup' }],
+        '2026-05-03': [{ title: '영화 비평 워크숍', type: 'event-class' }],
+        '2026-05-07': [{ title: '독립영화 모임', type: 'event-meetup' }],
+        '2026-05-10': [
+          { title: '영화 비평 워크숍', type: 'event-class' },
+          { title: '신작 개막', type: 'event-screening' }
+        ],
+        '2026-05-15': [{ title: '시나리오 클래스', type: 'event-class' }],
+        '2026-05-17': [{ title: '심야상영', type: 'event-screening' }],
+        '2026-05-22': [{ title: '제작 실습', type: 'event-class' }],
+        '2026-05-24': [{ title: '심야상영', type: 'event-screening' }],
+        '2026-05-25': [{ title: '정규 모임', type: 'event-meetup' }],
+        '2026-06-06': [{ title: '특별 상영', type: 'event-screening' }],
+        '2026-06-10': [{ title: '독립영화 모임', type: 'event-meetup' }],
+        '2026-06-14': [{ title: '영화 비평 워크숍', type: 'event-class' }],
+        '2026-06-20': [
+          { title: '감독 특집 GV', type: 'event-screening' },
+          { title: '정규 모임', type: 'event-meetup' }
+        ],
+        '2026-06-28': [{ title: '심야상영', type: 'event-screening' }]
+      };
+
+      const monthNames = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+      let currentYear = 2026;
+      let currentMonth = 3; // 0-indexed, April = 3
+
+      function renderCalendar() {
+        const calGrid = document.getElementById('cal-grid');
+        // Remove old cells (keep headers)
+        const cells = calGrid.querySelectorAll('.cal-cell');
+        cells.forEach(c => c.remove());
+
+        document.getElementById('cal-month-year').textContent =
+          currentYear + '. ' + String(currentMonth + 1).padStart(2, '0');
+
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        // Empty cells before first day
+        for (let i = 0; i < firstDay; i++) {
+          const cell = document.createElement('div');
+          cell.className = 'cal-cell empty';
+          calGrid.appendChild(cell);
+        }
+
+        // Day cells
+        for (let d = 1; d <= daysInMonth; d++) {
+          const cell = document.createElement('div');
+          cell.className = 'cal-cell';
+
+          const dateKey = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+          cell.innerHTML = '<span class="cal-date">' + d + '</span>';
+
+          if (eventData[dateKey]) {
+            eventData[dateKey].forEach(ev => {
+              cell.innerHTML += '<div class="cal-event ' + ev.type + '">' + ev.title + '</div>';
+            });
+          }
+          calGrid.appendChild(cell);
+        }
+      }
+
+      document.getElementById('prev-month').addEventListener('click', () => {
+        currentMonth--;
+        if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+        renderCalendar();
+      });
+
+      document.getElementById('next-month').addEventListener('click', () => {
+        currentMonth++;
+        if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+        renderCalendar();
+      });
+
+      renderCalendar();
+
+      /* ===== SMOOTH SCROLL ===== */
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href === '#') return;
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            setMenuOpen(false);
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      /* ===== INTERSECTION OBSERVER (fade-up) ===== */
+      const fadeEls = document.querySelectorAll('.fade-up');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      fadeEls.forEach(el => observer.observe(el));
+
+      // Trigger hero immediately
+      document.querySelector('.hero .fade-up').classList.add('visible');
+    </script>
+  
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body></html>
